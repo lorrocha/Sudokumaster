@@ -1,6 +1,13 @@
 require_relative 'Box'
+require 'pry'
 
 class SudokuGame < Array
+  def initialize(puzzle)
+    puzzle.each_with_index do |row, row_index|
+      col_index = -1
+      self << row.map! { |val| Box.new(val, row_index, col_index += 1, self) }
+    end
+  end
 
   def box_lookup
     return [
@@ -42,21 +49,12 @@ class SudokuGame < Array
     ]
   end
 
-  def initialize(puzzle)
-    puzzle.each_with_index do |row, row_index|
-      col_index = -1
-      self << row.map! { |val| Box.new(val, row_index, col_index += 1, self) }
-    end
-  end
-
   def boxes
     self.flatten
   end
 
   def solved?
-    array_of_results = []
-    boxes.each {|box| array_of_results << box.solved? }
-    !array_of_results.include?(false)
+    !(boxes.map {|box| box.solved? }.include?(false))
   end
 
   def row(index)
@@ -68,11 +66,7 @@ class SudokuGame < Array
   end
 
   def column(index)
-    column_array = []
-    self.each do |row|
-      column_array << row[index]
-    end
-    column_array
+    self.map { |row| row[index] }
   end
 
   def column_values(index)
@@ -81,14 +75,12 @@ class SudokuGame < Array
 
   def box_values(x, y)
     box_lookup.each do |box|
-      if box.include?([x,y])
-        return box.map {|coor| self[coor[0]][coor[1]].value}
-      end
+      return box.map {|coor| self[coor[0]][coor[1]].value} if box.include?([x,y])
     end
   end
 
   def solve
-    20.times { |time| boxes.each { |box| box.attempt_solution }}
+    boxes.each { |box| box.attempt_solution } until self.solved?
     self.map do |row|
       row.map { |box| box.value }.join + "\n"
     end.join

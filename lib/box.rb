@@ -1,16 +1,15 @@
 class Box
-
   attr_reader :value
-
-  def all_options
-    [1,2,3,4,5,6,7,8,9]
-  end
 
   def initialize(value, x, y, puzzle)
     @value = value
     @x = x
     @y = y
     @puzzle = puzzle
+  end
+
+  def all_options
+    [1,2,3,4,5,6,7,8,9]
   end
 
   def solved?
@@ -37,9 +36,7 @@ class Box
 
   def attempt_solution
     return if @value != 0
-    if options.length == 1
-      @value = options.first
-    end
+    @value = options.first if options.length == 1
   end
 
 end
