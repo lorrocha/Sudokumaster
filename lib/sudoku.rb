@@ -1,9 +1,15 @@
 require_relative 'Box'
 
 class SudokuGame < Array
+  def initialize(puzzle)
+    puzzle.each_with_index do |row, row_index|
+      col_index = -1
+      self << row.map! { |val| Box.new(val, row_index, col_index += 1, self) }
+    end
+  end
 
   def box_lookup
-    return [
+    [
       [0, 0], [0, 1], [0, 2],
       [1, 0], [1, 1], [1, 2],
       [2, 0], [2, 1], [2, 2]
@@ -40,13 +46,6 @@ class SudokuGame < Array
       [7, 6], [7, 7], [7, 8],
       [8, 6], [8, 7], [8, 8]
     ]
-  end
-
-  def initialize(puzzle)
-    puzzle.each_with_index do |row, row_index|
-      col_index = -1
-      self << row.map! { |val| Box.new(val, row_index, col_index += 1, self) }
-    end
   end
 
   def boxes
