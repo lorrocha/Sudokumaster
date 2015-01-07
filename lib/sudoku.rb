@@ -1,4 +1,5 @@
 require_relative 'Box'
+require 'pry'
 
 class SudokuGame < Array
   def initialize(puzzle)
@@ -79,7 +80,7 @@ class SudokuGame < Array
   end
 
   def solve
-    20.times { |time| boxes.each { |box| box.attempt_solution }}
+    boxes.each { |box| box.attempt_solution } until self.solved?
     self.map do |row|
       row.map { |box| box.value }.join + "\n"
     end.join
