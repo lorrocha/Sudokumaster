@@ -9,7 +9,7 @@ class SudokuGame < Array
   end
 
   def box_lookup
-    [
+    return [
       [0, 0], [0, 1], [0, 2],
       [1, 0], [1, 1], [1, 2],
       [2, 0], [2, 1], [2, 2]
@@ -53,9 +53,7 @@ class SudokuGame < Array
   end
 
   def solved?
-    array_of_results = []
-    boxes.each {|box| array_of_results << box.solved? }
-    !array_of_results.include?(false)
+    !(boxes.map {|box| box.solved? }.include?(false))
   end
 
   def row(index)
@@ -67,11 +65,7 @@ class SudokuGame < Array
   end
 
   def column(index)
-    column_array = []
-    self.each do |row|
-      column_array << row[index]
-    end
-    column_array
+    self.map { |row| row[index] }
   end
 
   def column_values(index)
@@ -80,9 +74,7 @@ class SudokuGame < Array
 
   def box_values(x, y)
     box_lookup.each do |box|
-      if box.include?([x,y])
-        return box.map {|coor| self[coor[0]][coor[1]].value}
-      end
+      return box.map {|coor| self[coor[0]][coor[1]].value} if box.include?([x,y])
     end
   end
 
