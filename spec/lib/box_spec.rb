@@ -1,4 +1,4 @@
-require "sudokumaster"
+require "sudokusolver"
 require "box"
 
 describe Box do
