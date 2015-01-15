@@ -1,7 +1,7 @@
 require_relative 'Box'
 require 'pry'
 
-class SudokuGame < Array
+class SudokuSolver < Array
   def initialize(puzzle)
     puzzle.each_with_index do |row, row_index|
       col_index = -1
